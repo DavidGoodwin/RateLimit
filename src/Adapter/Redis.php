@@ -27,7 +27,8 @@ class Redis extends \PalePurple\RateLimit\Adapter
      */
     public function set($key, $value, $ttl)
     {
-        return $this->redis->set($key, (string)$value, $ttl);
+        $ret = $this->redis->set($key, (string)$value, $ttl);
+        return $ret == true; /* redis returns true OR \Redis (when in multimode). */
     }
 
     /**
@@ -36,7 +37,11 @@ class Redis extends \PalePurple\RateLimit\Adapter
      */
     public function get($key)
     {
-        return (float)$this->redis->get($key);
+        $ret = $this->redis->get($key);
+        if (is_numeric($ret)) {
+            return (float) $ret;
+        }
+        return (float) 0;
     }
 
     /**
