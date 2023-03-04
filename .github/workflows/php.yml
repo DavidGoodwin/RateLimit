@@ -53,7 +53,7 @@ jobs:
       run: composer psalm
 
 
-  build-test:
+  unit-test:
     runs-on: ubuntu-22.04
     needs: [sanity-check]
     env: 
