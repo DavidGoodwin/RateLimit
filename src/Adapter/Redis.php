@@ -24,24 +24,32 @@ class Redis extends \PalePurple\RateLimit\Adapter
      * @param float $value
      * @param int $ttl
      * @return bool
+     * @throws \RedisException
      */
     public function set($key, $value, $ttl)
     {
-        return $this->redis->set($key, (string)$value, $ttl);
+        $ret = $this->redis->set($key, (string)$value, $ttl);
+        return $ret == true; /* redis returns true OR \Redis (when in multimode). */
     }
 
     /**
      * @return float
      * @param string $key
+     * @throws \RedisException
      */
     public function get($key)
     {
-        return (float)$this->redis->get($key);
+        $ret = $this->redis->get($key);
+        if (is_numeric($ret)) {
+            return (float) $ret;
+        }
+        return (float) 0;
     }
 
     /**
      * @param string $key
      * @return bool
+     * @throws \RedisException
      */
     public function exists($key)
     {
@@ -51,6 +59,7 @@ class Redis extends \PalePurple\RateLimit\Adapter
     /**
      * @param string $key
      * @return  bool
+     * @throws \RedisException
      */
     public function del($key)
     {

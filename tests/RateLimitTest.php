@@ -127,10 +127,10 @@ class RateLimitTest extends TestCase
     }
 
 
-    private function check($adapter)
+    private function check(Adapter $adapter)
     {
-        $label = uniqid("label", true); // should stop storage conflicts if tests are running in parallel.
-        $rateLimit = $this->getRateLimit($adapter);
+        $label = phpversion() . '-' . uniqid("label", true); // should stop storage conflicts if tests are running in parallel.
+        $rateLimit = $this->getRateLimit($adapter, $label);
 
         $rateLimit->purge($label); // make sure a previous failed test doesn't mess up this one .
 
@@ -153,8 +153,8 @@ class RateLimitTest extends TestCase
         $this->assertTrue($rateLimit->check($label));
     }
 
-    private function getRateLimit(Adapter $adapter)
+    private function getRateLimit(Adapter $adapter, $label)
     {
-        return new RateLimit(self::NAME . uniqid(), self::MAX_REQUESTS, self::PERIOD, $adapter);
+        return new RateLimit($label, self::MAX_REQUESTS, self::PERIOD, $adapter);
     }
 }
