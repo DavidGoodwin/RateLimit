@@ -24,6 +24,7 @@ class Redis extends \PalePurple\RateLimit\Adapter
      * @param float $value
      * @param int $ttl
      * @return bool
+     * @throws \RedisException
      */
     public function set($key, $value, $ttl)
     {
@@ -34,6 +35,7 @@ class Redis extends \PalePurple\RateLimit\Adapter
     /**
      * @return float
      * @param string $key
+     * @throws \RedisException
      */
     public function get($key)
     {
@@ -47,6 +49,7 @@ class Redis extends \PalePurple\RateLimit\Adapter
     /**
      * @param string $key
      * @return bool
+     * @throws \RedisException
      */
     public function exists($key)
     {
@@ -56,6 +59,7 @@ class Redis extends \PalePurple\RateLimit\Adapter
     /**
      * @param string $key
      * @return  bool
+     * @throws \RedisException
      */
     public function del($key)
     {
