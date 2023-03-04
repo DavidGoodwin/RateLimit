@@ -127,7 +127,7 @@ class RateLimitTest extends TestCase
     }
 
 
-    private function check($adapter)
+    private function check(Adapter $adapter)
     {
         $label = phpversion() . '-' . uniqid("label", true); // should stop storage conflicts if tests are running in parallel.
         $rateLimit = $this->getRateLimit($adapter, $label);
