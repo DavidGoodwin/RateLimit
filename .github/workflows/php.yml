@@ -5,9 +5,61 @@ on:
     
 
 jobs:
-  build:
-
+  sanity-check:
     runs-on: ubuntu-22.04
+    env: 
+      key: cache-v1
+      extensions: apc, redis, apcu, memcache, memcached
+
+    strategy:
+      matrix:
+        php-versions: [ '7.2', '7.3', '7.4', '8.0', '8.1', '8.2' ]
+
+    steps:
+
+    - uses: actions/checkout@v3
+    - name: Setup cache environment for ${{ matrix.php-versions }}
+      id: extcache
+      uses: shivammathur/cache-extensions@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: ${{ env.extensions }}
+        key: ${{ env.key }}
+
+    - name: Cache extensions
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.extcache.outputs.dir }}
+        key: ${{ steps.extcache.outputs.key }}
+        restore-keys: ${{ steps.extcache.outputs.key }}
+
+    - name: Setup PHP {{ matrix.php-versions }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+        tools: composer
+        extensions: ${{ env.extensions }}
+        ini-values: apc.enable_cli=1
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: format check etc
+      run: composer check-format
+
+    - name: phpstan
+      run: composer phpstan
+
+    - name: psalm
+      run: composer psalm
+
+
+  build-test:
+    runs-on: ubuntu-22.04
+    needs: [sanity-check]
     env: 
       key: cache-v1
       extensions: apc, redis, apcu, memcache, memcached
@@ -29,7 +81,6 @@ jobs:
     steps:
 
     - uses: actions/checkout@v3
-
 
     - name: Setup cache environment for ${{ matrix.php-versions }}
       id: extcache
@@ -54,14 +105,15 @@ jobs:
         extensions: ${{ env.extensions }}
         ini-values: apc.enable_cli=1
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
+    - name: psalm
+      run: composer psalm
+
     - name: Run test suite
-      run: composer build
+      run: composer test
       env:
          REDIS_HOST: localhost
          MEMCACHE_HOST: localhost
