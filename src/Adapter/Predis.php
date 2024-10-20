@@ -17,33 +17,22 @@ class Predis extends \PalePurple\RateLimit\Adapter
         $this->redis = $client;
     }
 
-
-    /**
-     * @param string $key
-     * @param float $value
-     * @param int $ttl
-     * @return bool
-     */
-    public function set($key, $value, $ttl)
+    public function set(string $key, float $value, int $ttl): bool
     {
-        return $this->redis->set($key, (string) $value, "ex", $ttl);
+        return $this->redis->set($key, (string)$value, "ex", $ttl);
     }
 
-    /**
-     * @return float
-     * @param string $key
-     */
-    public function get($key)
+    public function get(string $key): float
     {
         return (float)$this->redis->get($key);
     }
 
-    public function exists($key)
+    public function exists(string $key): bool
     {
         return (bool)$this->redis->exists($key);
     }
 
-    public function del($key)
+    public function del(string $key): bool
     {
         return (bool)$this->redis->del([$key]);
     }

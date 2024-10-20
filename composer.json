@@ -3,7 +3,7 @@
   "name": "palepurple/rate-limit",
   "description": "PHP rate limiting library with Token Bucket Algorithm, originally touhonoob/rate-limit",
   "require": {
-    "php": ">= 7.4"
+    "php": ">= 8.9"
   },
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "^1.0",

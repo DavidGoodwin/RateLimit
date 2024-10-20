@@ -14,23 +14,18 @@ abstract class Adapter
      * @param float $value
      * @param int $ttl - seconds after which this entry will expire e.g 50
      */
-    abstract public function set($key, $value, $ttl);
+    abstract public function set(string $key, float $value, int $ttl);
 
     /**
      * @param string $key
-     * @return float
+     * @return float - the amount of request allowance left
      */
-    abstract public function get($key);
+    abstract public function get(string $key): float;
+
+    abstract public function exists(string $key): bool;
 
     /**
-     * @param string $key
-     * @return bool
+     * @return bool - true if delete works
      */
-    abstract public function exists($key);
-
-    /**
-     * @return bool
-     * @param string $key
-     */
-    abstract public function del($key);
+    abstract public function del(string $key): bool;
 }

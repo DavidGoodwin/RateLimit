@@ -11,17 +11,14 @@ use Stash\Invalidation;
  */
 class Stash extends Adapter
 {
-    /**
-     * @var \Stash\Pool
-     */
-    private $pool;
+    private \Stash\Pool $pool;
 
     public function __construct(\Stash\Pool $pool)
     {
         $this->pool = $pool;
     }
 
-    public function get($key)
+    public function get(string $key): float
     {
         $item = $this->pool->getItem($key);
         $item->setInvalidationMethod(Invalidation::OLD);
@@ -29,10 +26,10 @@ class Stash extends Adapter
         if ($item->isHit()) {
             return $item->get();
         }
-        return (float) 0;
+        return (float)0;
     }
 
-    public function set($key, $value, $ttl)
+    public function set(string $key, float $value, int $ttl): bool
     {
         $item = $this->pool->getItem($key);
         $item->set($value);
@@ -40,14 +37,14 @@ class Stash extends Adapter
         return $item->save();
     }
 
-    public function exists($key)
+    public function exists(string $key): bool
     {
         $item = $this->pool->getItem($key);
         $item->setInvalidationMethod(Invalidation::OLD);
         return $item->isHit();
     }
 
-    public function del($key)
+    public function del(string $key): bool
     {
         return $this->pool->deleteItem($key);
     }

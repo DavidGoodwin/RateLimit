@@ -21,22 +21,6 @@
             </errorLevel>
         </UndefinedClass>
 
-        <LessSpecificReturnType errorLevel="info" />
-
-        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
-
-        <DeprecatedMethod errorLevel="info" />
-        <DeprecatedProperty errorLevel="info" />
-        <DeprecatedClass errorLevel="info" />
-        <DeprecatedConstant errorLevel="info" />
-        <DeprecatedInterface errorLevel="info" />
-        <DeprecatedTrait errorLevel="info" />
-
-        <MissingClosureReturnType errorLevel="info" />
-
-        <MissingClosureParamType errorLevel="info" />
-        <RedundantCondition errorLevel="info" />
-        <RedundantConditionGivenDocblockType errorLevel="info" />
 
         <UnresolvableInclude errorLevel="info" />
     </issueHandlers>

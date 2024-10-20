@@ -8,37 +8,20 @@ namespace PalePurple\RateLimit;
  */
 class RateLimit
 {
-    /**
-     *
-     * @var string
-     */
-    protected $name;
+    protected string $name;
+    protected int $maxRequests;
+    protected int $period;
 
-    /**
-     *
-     * @var int
-     */
-    protected $maxRequests;
-
-    /**
-     *
-     * @var int
-     */
-    protected $period;
-
-    /**
-     * @var Adapter
-     */
-    private $adapter;
+    private Adapter $adapter;
 
     /**
      * RateLimit constructor.
-     * @param string $name - prefix used in storage keys.
-     * @param int $maxRequests
+     * @param string $name - some unique identifying name for the rate limiter
+     * @param int $maxRequests how many requests (tokens) in $period before rate limiting kicks in
      * @param int $period seconds
      * @param Adapter $adapter - storage adapter
      */
-    public function __construct($name, $maxRequests, $period, Adapter $adapter)
+    public function __construct(string $name, int $maxRequests, int $period, Adapter $adapter)
     {
         $this->name = $name;
         $this->maxRequests = $maxRequests;
@@ -49,11 +32,11 @@ class RateLimit
     /**
      * Rate Limiting
      * http://stackoverflow.com/a/668327/670662
-     * @param string $id
-     * @param float $use
+     * @param string $id - e.g someone's login, ip address or otherwise thing you wish to possibly throttle
+     * @param float $use - each call to check uses this many tokens
      * @return boolean - true if you're within your allowance, false if over allowance
      */
-    public function check($id, $use = 1.0)
+    public function check(string $id, float $use = 1.0): bool
     {
         $rate = $this->maxRequests / $this->period;
 
@@ -92,11 +75,11 @@ class RateLimit
     }
 
     /**
-     * @deprecated use getAllowance() instead.
      * @param string $id
      * @return int
+     * @deprecated use getAllowance() instead.
      */
-    public function getAllow($id)
+    public function getAllow(string $id): int
     {
         return $this->getAllowance($id);
     }
@@ -104,11 +87,9 @@ class RateLimit
 
     /**
      * Get allowance left.
-     *
-     * @param string $id
      * @return int number of requests that can be made before hitting a limit.
      */
-    public function getAllowance($id)
+    public function getAllowance(string $id): int
     {
         $this->check($id, 0.0);
 
@@ -117,70 +98,44 @@ class RateLimit
         if (!$this->adapter->exists($a_key)) {
             return $this->maxRequests;
         }
-        return (int) max(0, floor($this->adapter->get($a_key)));
+        return (int)max(0, floor($this->adapter->get($a_key)));
     }
 
     /**
      * Purge rate limit record for $id
-     * @param string $id
-     * @return void
      */
-    public function purge($id)
+    public function purge(string $id): void
     {
         $this->adapter->del($this->keyTime($id));
         $this->adapter->del($this->keyAllow($id));
     }
 
-    /**
-     * @return string
-     * @param string $id
-     */
-    private function keyTime($id)
+    private function keyTime(string $id): string
     {
         return $this->name . ":" . $id . ":time";
     }
 
-    /**
-     * @return string
-     * @param string $id
-     */
-    private function keyAllow($id)
+    private function keyAllow(string $id): string
     {
         return $this->name . ":" . $id . ":allow";
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param int $maxRequests
-     * @return void
-     */
-    public function setMaxRequests($maxRequests)
+    public function setMaxRequests(int $maxRequests): void
     {
         $this->maxRequests = $maxRequests;
     }
 
-    /**
-     * @param int $period
-     * @return void
-     */
-    public function setPeriod($period)
+    public function setPeriod(int $period): void
     {
         $this->period = $period;
     }
 
-    /**
-     * @param Adapter $adapter
-     * @return void
-     */
-    public function setAdapter(Adapter $adapter)
+    public function setAdapter(Adapter $adapter): void
     {
         $this->adapter = $adapter;
     }
