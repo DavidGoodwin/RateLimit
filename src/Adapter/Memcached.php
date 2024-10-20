@@ -4,7 +4,6 @@ namespace PalePurple\RateLimit\Adapter;
 
 class Memcached extends \PalePurple\RateLimit\Adapter
 {
-
     /**
      * @var \Memcached
      */
@@ -26,7 +25,7 @@ class Memcached extends \PalePurple\RateLimit\Adapter
      */
     public function get($key)
     {
-        $val = $this->_get($key);
+        $val = $this->realGet($key);
         return (float) $val;
     }
 
@@ -34,14 +33,14 @@ class Memcached extends \PalePurple\RateLimit\Adapter
      * @return bool|float
      * @param string $key
      */
-    private function _get($key)
+    private function realGet($key)
     {
         return $this->memcached->get($key);
     }
 
     public function exists($key)
     {
-        $val = $this->_get($key);
+        $val = $this->realGet($key);
         return $val !== false;
     }
 

@@ -15,19 +15,19 @@ abstract class Adapter
      * @param int $ttl - seconds after which this entry will expire e.g 50
      */
     abstract public function set($key, $value, $ttl);
-    
+
     /**
      * @param string $key
      * @return float
      */
     abstract public function get($key);
-    
+
     /**
      * @param string $key
      * @return bool
      */
     abstract public function exists($key);
-    
+
     /**
      * @return bool
      * @param string $key

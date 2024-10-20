@@ -8,7 +8,6 @@ namespace PalePurple\RateLimit\Adapter;
  */
 class Redis extends \PalePurple\RateLimit\Adapter
 {
-
     /**
      * @var \Redis
      */

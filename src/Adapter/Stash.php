@@ -11,7 +11,6 @@ use Stash\Invalidation;
  */
 class Stash extends Adapter
 {
-
     /**
      * @var \Stash\Pool
      */

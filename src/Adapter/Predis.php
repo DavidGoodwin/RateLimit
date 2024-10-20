@@ -7,7 +7,6 @@ namespace PalePurple\RateLimit\Adapter;
  */
 class Predis extends \PalePurple\RateLimit\Adapter
 {
-
     /**
      * @var \Predis\ClientInterface
      */
