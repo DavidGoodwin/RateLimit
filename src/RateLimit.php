@@ -51,8 +51,8 @@ class RateLimit
      * Rate Limiting
      * http://stackoverflow.com/a/668327/670662
      * @param string $id
-     * @param float $use
-     * @return boolean
+     * @param float $use 
+     * @return boolean - true if you're within your allowance, false if over allowance
      */
     public function check($id, $use = 1.0)
     {
