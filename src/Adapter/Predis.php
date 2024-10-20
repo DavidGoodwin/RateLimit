@@ -7,7 +7,6 @@ namespace PalePurple\RateLimit\Adapter;
  */
 class Predis extends \PalePurple\RateLimit\Adapter
 {
-
     protected \Predis\ClientInterface $redis;
 
     public function __construct(\Predis\ClientInterface $client)
