@@ -6,7 +6,7 @@ on:
 
 jobs:
   sanity-check:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env: 
       key: cache-v1
       extensions: apc, redis, apcu, memcache, memcached
@@ -18,7 +18,7 @@ jobs:
       id: extcache
       uses: shivammathur/cache-extensions@v1
       with:
-        php-version: 7.4
+        php-version: 8.0
         extensions: ${{ env.extensions }}
         key: ${{ env.key }}
 
@@ -32,7 +32,7 @@ jobs:
     - name: Setup PHP {{ matrix.php-versions }}
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.4
+        php-version: 8.0
         tools: composer
         extensions: ${{ env.extensions }}
         ini-values: apc.enable_cli=1
@@ -54,7 +54,7 @@ jobs:
 
 
   unit-test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [sanity-check]
     env: 
       key: cache-v1
@@ -72,7 +72,7 @@ jobs:
           - 11211:11211
     strategy:
       matrix:
-        php-versions: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
+        php-versions: [ '8.0', '8.1', '8.2', '8.3' ]
 
     steps:
 
