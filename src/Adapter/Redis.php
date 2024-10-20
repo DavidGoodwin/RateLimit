@@ -62,6 +62,15 @@ class Redis extends \PalePurple\RateLimit\Adapter
      */
     public function del($key)
     {
-        return $this->redis->del($key) > 0;
+        $ret = $this->redis->del($key);
+        if (is_bool($ret)) {
+            return $ret;
+        }
+
+        if (is_int($ret)) {
+            return (bool) $ret;
+        }
+
+        return false;
     }
 }
