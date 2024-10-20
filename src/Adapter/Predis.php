@@ -7,10 +7,8 @@ namespace PalePurple\RateLimit\Adapter;
  */
 class Predis extends \PalePurple\RateLimit\Adapter
 {
-    /**
-     * @var \Predis\ClientInterface
-     */
-    protected $redis;
+
+    protected \Predis\ClientInterface $redis;
 
     public function __construct(\Predis\ClientInterface $client)
     {
@@ -19,7 +17,8 @@ class Predis extends \PalePurple\RateLimit\Adapter
 
     public function set(string $key, float $value, int $ttl): bool
     {
-        return $this->redis->set($key, (string)$value, "ex", $ttl);
+        $this->redis->set($key, (string)$value, "ex", $ttl);
+        return true;
     }
 
     public function get(string $key): float

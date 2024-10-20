@@ -9,9 +9,9 @@
     "php-parallel-lint/php-parallel-lint": "^1.0",
     "php-coveralls/php-coveralls": "^2.2",
     "phpunit/phpunit": "^8|^9",
-    "predis/predis": "^1.1",
+    "predis/predis": "^1.1|2.0",
     "psr/cache": "^1.0",
-    "tedivm/stash": "^0.16",
+    "tedivm/stash": "^0.16|^1.0",
     "psalm/phar": "*",
     "phpstan/phpstan": "*",
     "slevomat/coding-standard": "^8.15"
