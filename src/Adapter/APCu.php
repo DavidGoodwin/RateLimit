@@ -8,22 +8,22 @@ namespace PalePurple\RateLimit\Adapter;
  */
 class APCu extends \PalePurple\RateLimit\Adapter
 {
-    public function set($key, $value, $ttl)
+    public function set(string $key, float $value, int $ttl): bool
     {
         return apcu_store($key, $value, $ttl);
     }
 
-    public function get($key)
+    public function get(string $key): float
     {
         return apcu_fetch($key);
     }
 
-    public function exists($key)
+    public function exists(string $key): bool
     {
         return apcu_exists($key);
     }
 
-    public function del($key)
+    public function del(string $key): bool
     {
         return apcu_delete($key);
     }

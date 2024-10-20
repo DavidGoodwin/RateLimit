@@ -3,18 +3,18 @@
   "name": "palepurple/rate-limit",
   "description": "PHP rate limiting library with Token Bucket Algorithm, originally touhonoob/rate-limit",
   "require": {
-    "php": ">= 5.6"
+    "php": ">= 8.0"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.7",
     "php-parallel-lint/php-parallel-lint": "^1.0",
     "php-coveralls/php-coveralls": "^2.2",
-    "phpunit/phpunit": "^8",
-    "predis/predis": "^1.1",
+    "phpunit/phpunit": "^8|^9",
+    "predis/predis": "^1.1|2.0",
     "psr/cache": "^1.0",
-    "tedivm/stash": "^0.16",
+    "tedivm/stash": "^0.16|^1.0",
     "psalm/phar": "*",
-    "phpstan/phpstan": "*"
+    "phpstan/phpstan": "*",
+    "slevomat/coding-standard": "^8.15"
   },
   "suggest": {
     "tedivm/stash": "^0.15",
@@ -45,8 +45,13 @@
     "psalm" : "@php ./vendor/bin/psalm.phar src",
     "phpstan" : "@php vendor/bin/phpstan analyse --level 6 src",
     "lint": "@php ./vendor/bin/parallel-lint --exclude vendor/ .",
-    "check-format": "@php ./vendor/bin/php-cs-fixer fix --ansi --dry-run --diff",
-    "format": "@php ./vendor/bin/php-cs-fixer fix --ansi",
+    "check-format": "@php ./vendor/bin/phpcs src",
+    "format": "@php ./vendor/bin/phpcbf src",
     "test": "@php ./vendor/bin/phpunit"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

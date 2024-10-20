@@ -8,7 +8,6 @@ namespace PalePurple\RateLimit\Adapter;
  */
 class Redis extends \PalePurple\RateLimit\Adapter
 {
-
     /**
      * @var \Redis
      */
@@ -20,24 +19,18 @@ class Redis extends \PalePurple\RateLimit\Adapter
     }
 
     /**
-     * @param string $key
-     * @param float $value
-     * @param int $ttl
-     * @return bool
      * @throws \RedisException
      */
-    public function set($key, $value, $ttl)
+    public function set(string $key, float $value, int $ttl): bool
     {
         $ret = $this->redis->set($key, (string)$value, $ttl);
         return $ret == true; /* redis returns true OR \Redis (when in multimode). */
     }
 
     /**
-     * @return float
-     * @param string $key
      * @throws \RedisException
      */
-    public function get($key)
+    public function get(string $key): float
     {
         $ret = $this->redis->get($key);
         if (is_numeric($ret)) {
@@ -47,22 +40,27 @@ class Redis extends \PalePurple\RateLimit\Adapter
     }
 
     /**
-     * @param string $key
-     * @return bool
      * @throws \RedisException
      */
-    public function exists($key)
+    public function exists(string $key): bool
     {
         return $this->redis->exists($key) == true;
     }
 
     /**
-     * @param string $key
-     * @return  bool
      * @throws \RedisException
      */
-    public function del($key)
+    public function del(string $key): bool
     {
-        return $this->redis->del($key) > 0;
+        $ret = $this->redis->del($key);
+        if (is_bool($ret)) {
+            return $ret;
+        }
+
+        if (is_int($ret)) {
+            return (bool) $ret;
+        }
+
+        return false;
     }
 }
