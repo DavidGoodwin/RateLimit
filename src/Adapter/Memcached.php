@@ -21,26 +21,17 @@ class Memcached extends \PalePurple\RateLimit\Adapter
 
     public function get(string $key): float
     {
-        $ret = $this->realGet($key);
-        if (is_float($ret)) {
-            return $ret;
+        $ret = $this->memcached->get($key);
+        if (is_numeric($ret)) {
+            return (float) $ret;
         }
         throw new \InvalidArgumentException("Unexpected data type from memcache, expected float, got " . gettype($ret));
     }
 
-    private function realGet(string $key): bool|float
-    {
-        $ret = $this->memcached->get($key);
-        if (is_float($ret) || is_bool($ret)) {
-            return $ret;
-        }
-        throw new \InvalidArgumentException("Unsupported data type from memcache: " . gettype($ret));
-    }
-
     public function exists(string $key): bool
     {
-        $val = $this->realGet($key);
-        return $val !== false;
+        $ret = $this->memcached->get($key);
+        return $ret !== false;
     }
 
     public function del(string $key): bool
