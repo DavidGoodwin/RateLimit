@@ -38,7 +38,7 @@ class RateLimit
      */
     public function check(string $id, float $use = 1.0): bool
     {
-        $rate = $this->maxRequests / $this->period;
+
 
         $t_key = $this->keyTime($id);
         $a_key = $this->keyAllow($id);
@@ -56,6 +56,9 @@ class RateLimit
         $this->adapter->set($t_key, $c_time, $this->period);
 
         $allowance = $this->adapter->get($a_key);
+
+        $rate = $this->maxRequests / $this->period;
+
         $allowance += $time_passed * $rate;
 
         if ($allowance > $this->maxRequests) {
