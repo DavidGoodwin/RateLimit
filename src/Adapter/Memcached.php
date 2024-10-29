@@ -4,12 +4,11 @@ namespace PalePurple\RateLimit\Adapter;
 
 class Memcached extends \PalePurple\RateLimit\Adapter
 {
-    /**
-     * @var \Memcached
-     */
-    protected $memcached;
 
-    public function __construct(\Memcached $memcached)
+    protected \Memcached $memcached;
+
+
+    public function __construct(\Memcached $memcached,)
     {
         $this->memcached = $memcached;
     }
@@ -22,15 +21,19 @@ class Memcached extends \PalePurple\RateLimit\Adapter
     public function get(string $key): float
     {
         $ret = $this->memcached->get($key);
-        if (is_numeric($ret)) {
-            return (float) $ret;
-        }
-        throw new \InvalidArgumentException("Unexpected data type from memcache, expected float, got " . gettype($ret));
+        
+        // it's possible for there to be a race condition between the caller using exists() and then calling get().
+        // when this happens, we'll be casting false to a float.
+        return (float)$ret;
     }
 
     public function exists(string $key): bool
     {
         $ret = $this->memcached->get($key);
+
+        // why not
+        // $this->memcached->getResultCode() === \Memcached::RES_NOTFOUND ??
+
         return $ret !== false;
     }
 
