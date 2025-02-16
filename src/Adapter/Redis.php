@@ -34,9 +34,9 @@ class Redis extends \PalePurple\RateLimit\Adapter
     {
         $ret = $this->redis->get($key);
         if (is_numeric($ret)) {
-            return (float) $ret;
+            return (float)$ret;
         }
-        return (float) 0;
+        return (float)0;
     }
 
     /**
@@ -44,7 +44,8 @@ class Redis extends \PalePurple\RateLimit\Adapter
      */
     public function exists(string $key): bool
     {
-        return $this->redis->exists($key) == true;
+        $ret = (bool) $this->redis->exists($key);
+        return $ret;
     }
 
     /**
@@ -61,7 +62,7 @@ class Redis extends \PalePurple\RateLimit\Adapter
         }
 
         if (is_int($ret)) {
-            return (bool) $ret;
+            return (bool)$ret;
         }
 
         return false;
