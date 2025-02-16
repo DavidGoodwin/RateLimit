@@ -13,7 +13,7 @@
     "predis/predis": "^1.1|2.0",
     "psr/cache": "^1.0|^2.0",
     "tedivm/stash": "^0.16|^1.0",
-    "psalm/phar": "*",
+    "psalm/phar": "^5.0",
     "phpstan/phpstan": "*",
     "slevomat/coding-standard": "^8.15"
   },
