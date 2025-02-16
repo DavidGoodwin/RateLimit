@@ -15,7 +15,7 @@ class APCu extends \PalePurple\RateLimit\Adapter
 
     public function get(string $key): float
     {
-        return apcu_fetch($key);
+        return (float) apcu_fetch($key);
     }
 
     public function exists(string $key): bool
