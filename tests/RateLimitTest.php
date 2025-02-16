@@ -5,6 +5,7 @@ namespace PalePurple\RateLimit\Tests;
 use PalePurple\RateLimit\Adapter;
 use PalePurple\RateLimit\RateLimit;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * @author Peter Chung <touhonoob@gmail.com>
@@ -126,6 +127,12 @@ class RateLimitTest extends TestCase
         $this->check($adapter);
     }
 
+    public function testCheckSymfonyCache()
+    {
+        $cache = new \Symfony\Component\Cache\Adapter\FilesystemAdapter();
+        $adapter = new Adapter\SymfonyCache($cache);
+        $this->check($adapter);
+    }
 
     private function check(Adapter $adapter)
     {
