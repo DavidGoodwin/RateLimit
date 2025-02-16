@@ -2,7 +2,6 @@ name: GitHub Build
 
 on:
   push:
-    
 
 jobs:
   sanity-check:
@@ -13,12 +12,12 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup cache environment for ${{ matrix.php-versions }}
       id: extcache
       uses: shivammathur/cache-extensions@v1
       with:
-        php-version: 8.0
+        php-version: 8.2
         extensions: ${{ env.extensions }}
         key: ${{ env.key }}
 
@@ -32,7 +31,7 @@ jobs:
     - name: Setup PHP {{ matrix.php-versions }}
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.0
+        php-version: 8.2
         tools: composer
         extensions: ${{ env.extensions }}
         ini-values: apc.enable_cli=1

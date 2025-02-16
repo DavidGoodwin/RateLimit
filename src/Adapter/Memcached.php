@@ -4,7 +4,6 @@ namespace PalePurple\RateLimit\Adapter;
 
 class Memcached extends \PalePurple\RateLimit\Adapter
 {
-
     protected \Memcached $memcached;
 
 
@@ -21,7 +20,7 @@ class Memcached extends \PalePurple\RateLimit\Adapter
     public function get(string $key): float
     {
         $ret = $this->memcached->get($key);
-        
+
         // it's possible for there to be a race condition between the caller using exists() and then calling get().
         // when this happens, we'll be casting false to a float.
         return (float)$ret;
