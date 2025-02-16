@@ -5,7 +5,7 @@ on:
 
 jobs:
   sanity-check:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     env: 
       key: cache-v1
       extensions: apc, redis, apcu, memcache, memcached
@@ -53,7 +53,7 @@ jobs:
 
 
   unit-test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     needs: [sanity-check]
     env: 
       key: cache-v1
