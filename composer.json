@@ -3,8 +3,7 @@
   "name": "palepurple/rate-limit",
   "description": "PHP rate limiting library with Token Bucket Algorithm, originally touhonoob/rate-limit",
   "require": {
-    "php": ">= 8.0",
-    "symfony/cache": "^6.0"
+    "php": ">= 8.0"
   },
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "^1.0",
@@ -15,11 +14,13 @@
     "tedivm/stash": "^0.16|^1.0",
     "psalm/phar": "^5.0",
     "phpstan/phpstan": "*",
-    "slevomat/coding-standard": "^8.15"
+    "slevomat/coding-standard": "^8.15",
+    "cache/array-adapter": "^1.2"
   },
   "suggest": {
-    "tedivm/stash": "^0.15",
+    "tedivm/stash": "^0.15|^1.0",
     "predis/predis": "^1.1",
+    "symfony/cache": "^6.0",
     "ext-redis": "^2.2",
     "ext-apc": "^4.0",
     "ext-apcu": "^4.0"
