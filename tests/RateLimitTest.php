@@ -2,9 +2,12 @@
 
 namespace PalePurple\RateLimit\Tests;
 
+use Cache\Adapter\PHPArray\ArrayCachePool;
 use PalePurple\RateLimit\Adapter;
 use PalePurple\RateLimit\RateLimit;
 use PHPUnit\Framework\TestCase;
+use Stash\Invalidation;
+use Stash\Pool;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
@@ -127,19 +130,21 @@ class RateLimitTest extends TestCase
         $this->check($adapter);
     }
 
-    public function testCheckSymfonyCache()
+    public function testCacheItemPool()
     {
-        $cache = new \Symfony\Component\Cache\Adapter\FilesystemAdapter();
-        $adapter = new Adapter\SymfonyCache($cache);
-        $this->check($adapter);
+        $cache = new Adapter\Psr6CacheItemPool(new ArrayCachePool());
+        $this->check($cache);
+
+        $stash = new \Stash\Pool(); // ephemeral driver by default
+        $stash->setInvalidationMethod(Invalidation::OLD); // stash needs this to behave
+        $cache = new Adapter\Psr6CacheItemPool($stash);
+        $this->check($cache);
     }
 
     private function check(Adapter $adapter)
     {
         $label = phpversion() . '-' . uniqid("label", true); // should stop storage conflicts if tests are running in parallel.
         $rateLimit = $this->getRateLimit($adapter, $label);
-
-        $rateLimit->purge($label); // make sure a previous failed test doesn't mess up this one .
 
         $this->assertEquals(self::MAX_REQUESTS, $rateLimit->getAllowance($label));
 
@@ -151,7 +156,7 @@ class RateLimitTest extends TestCase
         }
 
         // bucket empty.
-        $this->assertFalse($rateLimit->check($label), "Bucket should be empty");
+        $this->assertFalse($rateLimit->check($label), "Bucket should be empty?" . $rateLimit->getAllowance($label));
         $this->assertEquals(0, $rateLimit->getAllowance($label), "Bucket should be empty");
 
         //Wait for PERIOD seconds, bucket should refill.
