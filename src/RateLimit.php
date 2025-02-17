@@ -115,12 +115,12 @@ class RateLimit
 
     private function keyTime(string $id): string
     {
-        return $this->name . ":" . $id . ":time";
+        return $this->name . "_" . $id . "_time";
     }
 
     private function keyAllow(string $id): string
     {
-        return $this->name . ":" . $id . ":allow";
+        return $this->name . "_" . $id . "_allow";
     }
 
     public function setName(string $name): void
